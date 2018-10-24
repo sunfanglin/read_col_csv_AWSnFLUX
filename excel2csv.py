@@ -10,9 +10,10 @@ path = '/home/sun/naqu_submit/'
 files = [f for f in os.listdir(path) if f.endswith(('.xls'))]
 #f_out1=open(path+'SS_data_15-17.txt', 'a')
 for fn in files:
-    print fn
+    print fn, '==>',
     data = pd.read_excel(fn)
     data.to_csv(fn[:-4]+'.csv',encoding='utf-8')
+    print fn[:-4]+'.csv'
     
     
 
