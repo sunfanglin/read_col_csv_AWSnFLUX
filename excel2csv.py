@@ -1,6 +1,7 @@
 
 import pandas as pd
 import xlrd
+import time
 #from petl import fromcsv, look, cut, tocsv 
 import io
 import sys, os
@@ -14,6 +15,7 @@ for fn in files:
     data = pd.read_excel(fn)
     data.to_csv(fn[:-4]+'.csv',encoding='utf-8')
     print fn[:-4]+'.csv'
+    time.sleep(1.2)
     
     
 
