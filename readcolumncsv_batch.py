@@ -5,21 +5,24 @@ import sys, os
 #fn = sys.argv[1]
 #path = 'D:/DATA/Naqu/Naqu/'
 #path = '/home/sun/naqu_submit/'
-path = 'C:/Users/sunfanglin/OneDrive/naqu_submit/'
+#path = 'C:/Users/Fanglin/OneDrive/naqu_submit/fillmissing/'
+path = '/home/sun/naqu_submit/null/'
+outpath = '/home/sun/naqu_submit/output/'
+print "\n ********************\n The input files are in ", path, "\n"
 #path = 'D:/DATA/QOMSAWS/'
 files = [f for f in os.listdir(path) if f.endswith(('.csv'))]
-print 'Data files are: \n' , files
+#print 'Data files are: \n' , files
 #f_out1=open(path+'SS_data_15-17.txt', 'a')
 for fn in files:
     print fn
-    #os.system('sed -i '+"'1s/ //g' "+fn)     ## remove empty spaces in first line of input file, used when reporting error of not existing headers
+    os.system('sed -i '+"'1s/ //g' "+path+fn)     ## remove empty spaces in first line of input file, used when reporting error of not existing headers
 
     #########################
     ######  BJ AWS  #########
     #########################
 
     if "BJ_AWS" in fn:
-        GRAD_BJ = pd.read_csv(fn, usecols=['Date/Time(BST)', 
+        GRAD_BJ = pd.read_csv(path+fn, usecols=['Date/Time(BST)', 
                                              'Ta_1.03m_10MinAve', 
                                              'Ta_8.41m_10MinAve',
                                              'RH_1.03m_10MinAve',
@@ -30,8 +33,8 @@ for fn in files:
                                              'WD_10.36m_10MinAve',
                                              'Pressure_10MinAve',
                                              'Precipitation_10minAcc'])
-        GRAD_BJ.to_csv('out/FILD_BOUD_GRAD_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
-        SOIL_BJ = pd.read_csv(fn, usecols = ['Date/Time(BST)', 
+        GRAD_BJ.to_csv(outpath+'FILD_BOUD_GRAD_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
+        SOIL_BJ = pd.read_csv(path+fn, usecols = ['Date/Time(BST)', 
                                                'Tg_10MinAve', 
                                                'Ts_4cm_10MinAve', 
                                                'Ts_10cm_10MinAve', 
@@ -41,20 +44,20 @@ for fn in files:
                                                'SHF_20cm_10MinAve', 
                                                'Swc_4cm_10MinAve', 
                                                'Swc_20cm_10MinAve'])
-        SOIL_BJ.to_csv('out/FILD_BOUD_SOIL_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
-        RADI_BJ = pd.read_csv(fn, usecols= ['Date/Time(BST)',
+        SOIL_BJ.to_csv(outpath+'FILD_BOUD_SOIL_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
+        RADI_BJ = pd.read_csv(path+fn, usecols= ['Date/Time(BST)',
                                               'Rsd_10MinAve', 
                                               'Rsu_10MinAve', 
                                               'Rld_10MinAve', 
                                               'Rlu_10MinAve'])
-        RADI_BJ.to_csv('out/FILD_BOUD_RADM_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
+        RADI_BJ.to_csv(outpath+'FILD_BOUD_RADM_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
 
     #########################
     ######  BJ FLUX #########
     #########################
 
     elif any(c in fn for c in("BJ_Flux","BJ_flux")):
-        FLUX_BJ = pd.read_csv(fn, usecols = ['Date/Time', 
+        FLUX_BJ = pd.read_csv(path+fn, usecols = ['Date/Time', 
                                                 'wnd_dir', 
                                                 'P_kPa', 
                                                 'Avg_T', 
@@ -65,14 +68,14 @@ for fn in files:
                                                 'QA_H', 
                                                 'QA_LE', 
                                                 'QA_Fc'])
-        FLUX_BJ.to_csv('out/FILD_BOUD_FLUX_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
+        FLUX_BJ.to_csv(outpath+'FILD_BOUD_FLUX_MIN30_NAQ'+fn[-9:], encoding='utf-8', index=False)
 
     #########################
     ####  Amdo PBL ##########
     #########################
 
     elif "Amdo_NewPBL" in fn:      ## More observations by PBL since July 2012
-        GRAD_AMDO = pd.read_csv(fn, usecols=['Date/Time(BST)',
+        GRAD_AMDO = pd.read_csv(path+fn, usecols=['Date/Time(BST)',
                                                  'Ta_1.5m_30MinAve',
                                                  'Ta_3m_30MinAve', 
                                                  'Ta_6m_30MinAve', 
@@ -91,8 +94,8 @@ for fn in files:
                                                  'WD_12m_30MinAve', 
                                                  'Pressure_30MinAve', 
                                                  'Precipitation_30MinAcc'])
-        GRAD_AMDO.to_csv('out/FILD_BOUD_GRAD_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
-        SOIL_AMDO = pd.read_csv(fn, usecols = ['Date/Time(BST)',
+        GRAD_AMDO.to_csv(outpath+'FILD_BOUD_GRAD_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        SOIL_AMDO = pd.read_csv(path+fn, usecols = ['Date/Time(BST)',
                                                    'Ts_5cm_30MinAve', 
                                                    'Ts_10cm_30MinAve', 
                                                    'Ts_20cm_30MinAve', 
@@ -107,16 +110,16 @@ for fn in files:
                                                    'Swc_40cm_30MinAve', 
                                                    'Swc_80cm_30MinAve', 
                                                    'Swc_160cm_30MinAve'])
-        SOIL_AMDO.to_csv('out/FILD_BOUD_SOIL_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
-        RADI_AMDO = pd.read_csv(fn, usecols= ['Date/Time(BST)',
+        SOIL_AMDO.to_csv(outpath+'FILD_BOUD_SOIL_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        RADI_AMDO = pd.read_csv(path+fn, usecols= ['Date/Time(BST)',
                                                   'Rsd_30MinAve', 
                                                   'Rsu_30MinAve', 
                                                   'Rld_30MinAve', 
                                                   'Rlu_30MinAve'])
-        RADI_AMDO.to_csv('out/FILD_BOUD_RADM_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        RADI_AMDO.to_csv(outpath+'FILD_BOUD_RADM_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
 
     elif "Amdo_PBL" in fn:           ## Old PBL before July 2012
-        GRAD_AMDO = pd.read_csv(fn, usecols=['Date/Time(BST)',
+        GRAD_AMDO = pd.read_csv(path+fn, usecols=['Date/Time(BST)',
                                                  'Ta_1.53m_30MinAve',
                                                  'Ta_5.56m_30MinAve', 
                                                  'Ta_13.58m_30MinAve', 
@@ -129,20 +132,20 @@ for fn in files:
                                                  'WD_13.89m_30MinAve', 
                                                  'Pressure_30MinAve', 
                                                  'Rain_30Acc'])
-        GRAD_AMDO.to_csv('out/FILD_BOUD_GRAD_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
-        SOIL_AMDO = pd.read_csv(fn, usecols = ['Date/Time(BST)',
+        GRAD_AMDO.to_csv(outpath+'FILD_BOUD_GRAD_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        SOIL_AMDO = pd.read_csv(path+fn, usecols = ['Date/Time(BST)',
                                                    'Ts_5cm_30MinAve', 
                                                    'Ts_10cm_30MinAve', 
                                                    'Ts_20cm_30MinAve', 
                                                    'SHF_10cm_30MinAve', 
                                                    'SHF_20cm_30MinAve', ])
-        SOIL_AMDO.to_csv('out/FILD_BOUD_SOIL_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
-        RADI_AMDO = pd.read_csv(fn, usecols= ['Date/Time(BST)',
+        SOIL_AMDO.to_csv(outpath+'FILD_BOUD_SOIL_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        RADI_AMDO = pd.read_csv(path+fn, usecols= ['Date/Time(BST)',
                                                   'Rsd_30MinAve', 
                                                   'Rsu_30MinAve', 
                                                   'Rld_30MinAve', 
                                                   'Rlu_30MinAve'])
-        RADI_AMDO.to_csv('out/FILD_BOUD_RADM_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        RADI_AMDO.to_csv(outpath+'FILD_BOUD_RADM_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
 
     #########################
     ####  Amdo FLUX #########
@@ -151,7 +154,7 @@ for fn in files:
     #elif "Amdo_Flux" in fn:
 
     elif any(c in fn for c in("Amdo_Flux","Amdo_flux")):
-        FLUX_AMDO = pd.read_csv(fn, usecols = ['Date/Time', 
+        FLUX_AMDO = pd.read_csv(path+fn, usecols = ['Date/Time', 
                                                     'wnd_dir', 
                                                     'P_kPa', 
                                                     'Avg_T', 
@@ -162,8 +165,8 @@ for fn in files:
                                                     'QA_H', 
                                                     'QA_LE', 
                                                     'QA_Fc'])
-        FLUX_AMDO.to_csv('out/FILD_BOUD_FLUX_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
+        FLUX_AMDO.to_csv(outpath+'FILD_BOUD_FLUX_MIN30_AND'+fn[-9:], encoding='utf-8', index=False)
     else :
         print 'filename not match, check file: ', fn
 
-print ' ...Completed! '
+print "\n***************************************\n...... Complete! Check output files in ", outpath
