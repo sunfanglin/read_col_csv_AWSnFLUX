@@ -6,15 +6,10 @@ import sys, os
 #path = 'D:/DATA/Naqu/Naqu/'
 #path = '/home/sun/naqu_submit/'
 #path = 'C:/Users/Fanglin/OneDrive/naqu_submit/fillmissing/'
-fr = 60
+for fr in (30,60):
+    
 path = '/home/sun/naqu_submit/'+str(fr)+'min/'
 outpath = '/home/sun/naqu_submit/output'+str(fr)+'min/'
-#if fr == 30:
-#    path = '/home/sun/naqu_submit/30min/'
-#    outpath = '/home/sun/naqu_submit/output30min/'
-#elif fr == 60:
-#    path = '/home/sun/naqu_submit/60min/'
-#    outpath = '/home/sun/naqu_submit/output60min/'
 
 print "\n ********************\n Time interval of data records is ", fr, "minutes."
 print "\n ********************\n Input path is ", path, '\n'
